@@ -1,0 +1,80 @@
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+            "Sid": "AllowRootAndHomeListingOfCompanyBucket for SAPPO request",
+            "Effect": "Allow",
+			"Action": [
+				"s3:ListBucket"
+			],	
+			"Principal": {
+				"AWS": "arn:aws:iam::115089117620:role/bu-rds-admin"
+			},
+            "Resource": "arn:aws:s3:::digital-corp-migration",
+            "Condition": {
+				"StringEquals": {
+					"s3:prefix": [
+						""
+					],
+					"s3:delimiter": [
+						"/"
+					]
+				}
+            }    
+        },
+        {
+            "Sid": "AllowDigitalListingOfS3Bucket",
+            "Action": ["s3:ListBucket"],
+            "Effect": "Allow",
+			"Principal": {
+				"AWS": "arn:aws:iam::115089117620:role/bu-rds-admin"
+			},
+            "Resource": "arn:aws:s3:::digital-corp-migration",
+            "Condition":{"StringEquals":{"s3:prefix":["", "dev/","qa/", "prd/"],"s3:delimiter":["/"]}}
+        },
+	  {
+		"Sid": "AllowListBucketActionToSubfolders",
+		"Action": "s3:ListBucket",
+		"Effect": "Allow",
+		"Resource": "arn:aws:s3:::digital-corp-migration",
+		"Condition": {
+			"StringLike": {
+				"s3:prefix": [
+					"dev/*",
+					"qa/*",
+					"prd/*"
+				]
+			}
+		},		
+		"Principal": {
+		  "AWS": "arn:aws:iam::115089117620:role/bu-rds-admin"
+		}
+	  },
+	  {
+		"Sid": "Stmt1599510141485",
+		"Action": "s3:*",
+		"Effect": "Allow",
+		"Resource": "arn:aws:s3:::digital-corp-migration/*",
+		"Principal": {
+		  "AWS": "arn:aws:iam::115089117620:role/bu-rds-admin"
+		}
+	  },
+	  {
+		"Sid": "AllowSSLRequestsOnly",
+		"Action": "s3:*",
+		"Effect": "Deny",
+		"Resource": [
+		  "arn:aws:s3:::digital-corp-migration",
+		  "arn:aws:s3:::digital-corp-migration/*"
+		  ],
+		"Principal": {
+		  "Service": "s3.amazonaws.com"
+		},
+		"Condition": {
+		  "Bool": {
+			"aws:SecureTransport": "false"
+		  }
+		}
+		}
+	]
+  }

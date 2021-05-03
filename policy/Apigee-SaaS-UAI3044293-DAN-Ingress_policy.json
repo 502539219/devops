@@ -1,0 +1,89 @@
+{
+	"Id": "Policy1600701829901",
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+            "Sid": "AllowRootAndHomeListingOfCompanyBucket",
+            "Effect": "Allow",
+			"Action": [
+				"s3:ListBucket"
+			],	
+			"Principal": "*",
+            "Resource": "arn:aws:s3:::apigee-saas-uai3044293-dan-ingress",
+            "Condition": {
+				"StringEquals": {
+					"s3:prefix": [
+						""
+					],
+					"s3:delimiter": [
+						"/"
+					]
+				}
+			}
+		},
+		{
+            "Sid": "AllowListingOfUserFolder",
+            "Effect": "Allow",
+			"Action": "s3:ListBucket",
+			"Principal": "*",
+            "Resource": "arn:aws:s3:::apigee-saas-uai3044293-dan-ingress",
+            "Condition": {
+                "StringLike": {
+                    "s3:prefix": "apigee_saas_logs/*"
+                }
+            }
+		},
+		{
+			"Sid": "AllowAllS3ActionsInUserFolder",
+			"Action": [
+			  "s3:PutObject"
+			],
+			"Effect": "Allow",
+			"Principal": "*",
+			"Resource": [
+				"arn:aws:s3:::apigee-saas-uai3044293-dan-ingress",
+				"arn:aws:s3:::apigee-saas-uai3044293-dan-ingress/*",
+				"arn:aws:s3:::apigee-saas-uai3044293-dan-ingress/apigee_saas_logs/*"
+			]		
+		},
+		{
+			"Sid": "AllowAllS3ActionsInUserFolder",
+			"Action": [
+			  "s3:GetObject",
+			  "s3:GetObjectVersion"
+			],
+			"Effect": "Allow",
+			"Principal": "*",
+			"Resource": [
+				"arn:aws:s3:::apigee-saas-uai3044293-dan-ingress",
+				"arn:aws:s3:::apigee-saas-uai3044293-dan-ingress/*",
+				"arn:aws:s3:::apigee-saas-uai3044293-dan-ingress/apigee_saas_logs/*"
+			],
+			"Condition": {
+				"IpAddress": {
+				  "aws:SourceIp": [
+					"10.0.0.0/8",
+					"3.0.0.0/8"
+				  ]
+				}
+			}
+		},
+	  {
+		"Sid": "AllowSSLRequestsOnly",
+		"Action": "s3:*",
+		"Effect": "Deny",
+		"Resource": [
+			"arn:aws:s3:::apigee-saas-uai3044293-dan-ingress",
+			"arn:aws:s3:::apigee-saas-uai3044293-dan-ingress/*"
+		  ],
+		"Principal": {
+			"Service": "s3.amazonaws.com"
+		},
+		"Condition": {
+			"Bool": {
+				"aws:SecureTransport": "false"
+			}
+		}
+	  }
+	]
+}

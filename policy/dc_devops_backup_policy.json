@@ -1,0 +1,32 @@
+{
+	"Id": "Policy1600701829901",
+	"Version": "2012-10-17",
+	"Statement": [
+	  {
+		"Sid": "Stmt1600701828782",
+		"Action": "s3:*",
+		"Effect": "Allow",
+		"Resource": "arn:aws:s3:::dc-devops-tf-session-backup",
+		"Principal": {
+			"Service": "s3.amazonaws.com"
+		  }
+	  },
+	  {
+		"Sid": "AllowSSLRequestsOnly",
+		"Action": "s3:*",
+		"Effect": "Deny",
+		"Resource": [
+			"arn:aws:s3:::dc-devops-tf-session-backup",
+			"arn:aws:s3:::dc-devops-tf-session-backup/*"
+		  ],
+		"Principal": {
+			"Service": "s3.amazonaws.com"
+		},
+		"Condition": {
+			"Bool": {
+				"aws:SecureTransport": "false"
+			}
+		}
+	  }
+	]
+}

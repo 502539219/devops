@@ -1,0 +1,32 @@
+{
+	"Id": "Policy1600375109933",
+	"Version": "2012-10-17",
+	"Statement": [
+	  {
+		"Sid": "Stmt1600375102080",
+		"Action": "s3:*",
+		"Effect": "Allow",
+		"Resource": "arn:aws:s3:::dc-aws-msk",
+		"Principal": {
+			"Service": "s3.amazonaws.com"
+		}
+	  },
+	  {
+		"Sid": "AllowSSLRequestsOnly",
+		"Action": "s3:*",
+		"Effect": "Deny",
+		"Resource": [
+		  "arn:aws:s3:::dc-aws-msk",
+		  "arn:aws:s3:::dc-aws-msk/*"
+		  ],
+		"Principal": {
+		  "Service": "s3.amazonaws.com"
+		},
+		"Condition": {
+		  "Bool": {
+			"aws:SecureTransport": "false"
+		  }
+		}
+	  }
+	]
+  }	

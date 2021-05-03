@@ -1,0 +1,40 @@
+{
+	"Id": "Policy1602273099558",
+	"Version": "2012-10-17",
+	"Statement": [
+	  {
+		"Sid": "AllowAllExceptDelete",
+		"Action": [
+			"s3:*",
+			"s3:GetObject",
+			"s3:Put*",
+			"s3:ListBucket"	
+		],
+		"Effect": "Allow",
+		"Resource": [
+			"arn:aws:s3:::dc-eks-velero",
+			"arn:aws:s3:::dc-eks-velero/*"
+		  ],
+		"Principal": {
+			"AWS":"arn:aws:iam::115089117620:user/bu-eks-velero"
+		}
+	  },
+	  {
+		"Sid": "AllowSSLRequestsOnly",
+		"Action": "s3:*",
+		"Effect": "Deny",
+		"Resource": [
+			"arn:aws:s3:::dc-eks-velero",
+			"arn:aws:s3:::dc-eks-velero/*"
+		  ],
+		"Principal": {
+			"Service": "s3.amazonaws.com"
+		},
+		"Condition": {
+			"Bool": {
+				"aws:SecureTransport": "false"
+			}
+		}
+	  }
+	]
+  }

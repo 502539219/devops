@@ -1,0 +1,602 @@
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+            "Sid": "AllowRootAndHomeListingOfCompanyBucket",
+            "Effect": "Allow",
+			"Action": [
+				"s3:ListBucket"
+			],	
+			"Principal": {
+				"AWS": [
+				  "arn:aws:iam::115089117620:user/dc-dive-dev-additive-user",
+				  "arn:aws:iam::115089117620:user/dc-dive-dev-digital-user",
+				  "arn:aws:iam::115089117620:user/dc-dive-dev-renewable-user",
+				  "arn:aws:iam::115089117620:user/dc-dive-stage-additive-user",
+				  "arn:aws:iam::115089117620:user/dc-dive-stage-digital-user",
+				  "arn:aws:iam::115089117620:user/dc-dive-stage-renewable-user",
+				  "arn:aws:iam::115089117620:user/dc-dive-prod-additive-user",
+				  "arn:aws:iam::115089117620:user/dc-dive-prod-digital-user",
+				  "arn:aws:iam::115089117620:user/dc-dive-prod-renewable-user",
+				  "arn:aws:iam::115089117620:user/dc-dive-engdev-product-user",
+				  "arn:aws:iam::115089117620:user/dc-dive-engqa-product-user",
+				  "arn:aws:iam::115089117620:user/dc-dive-dev-product-user",
+				  "arn:aws:iam::115089117620:user/dc-dive-prod-product-user",
+				  "arn:aws:iam::115089117620:user/dc-dive-stage-product-user",
+				  "arn:aws:iam::115089117620:user/dc-dive-dev-corporate-user",
+				  "arn:aws:iam::115089117620:user/dc-dive-stage-corporate-user",
+				  "arn:aws:iam::115089117620:user/dc-dive-prod-corporate-user",
+				  "arn:aws:iam::325381443140:user/boomi_thru_user"
+				]
+			},
+            "Resource": "arn:aws:s3:::dc-dive",
+            "Condition": {
+				"StringEquals": {
+					"s3:prefix": [
+						""
+					],
+					"s3:delimiter": [
+						"/"
+					]
+				}
+			}
+		},
+		{
+            "Sid": "AllowListingOfUserFolderEngqa",
+            "Effect": "Allow",
+			"Action": "s3:ListBucket",
+			"Principal": {
+				"AWS": [
+				  "arn:aws:iam::115089117620:user/dc-dive-engqa-product-user"
+				]
+			},
+            "Resource": "arn:aws:s3:::dc-dive",
+            "Condition": {
+                "StringLike": {
+                    "s3:prefix": "engqa/*"
+                }
+            }
+        },
+		{
+		"Sid": "AllowAllS3ActionsInUserFolderEngqaFullAccess",
+		"Action": [
+		  "s3:*"
+		],
+		"Effect": "Allow",
+		"Principal": {
+			"AWS": [
+			  "arn:aws:iam::115089117620:user/dc-dive-engqa-product-user"
+			]
+		},
+		"Resource": "arn:aws:s3:::dc-dive/engqa/*"		
+		},
+		{
+            "Sid": "AllowListingOfUserFolderDevS3Snapshot",
+            "Effect": "Allow",
+			"Action": "s3:ListBucket",
+			"Principal": {
+				"AWS": [
+				  "arn:aws:iam::115089117620:user/dc-dive-dev-product-user"
+				]
+			},
+            "Resource": "arn:aws:s3:::dc-dive",
+            "Condition": {
+                "StringLike": {
+                    "s3:prefix": "dev/dive-es-snapshot-s3-repo/*"
+                }
+            }
+        },
+		{
+		"Sid": "AllowAllS3ActionsInUserFolderDevS3SnapshotFullAccess",
+		"Action": [
+		  "s3:*"
+		],
+		"Effect": "Allow",
+		"Principal": {
+			"AWS": [
+			  "arn:aws:iam::115089117620:user/dc-dive-dev-product-user"
+			]
+		},
+		"Resource": "arn:aws:s3:::dc-dive/dev/dive-es-snapshot-s3-repo/*"		
+		},
+		{
+            "Sid": "AllowListingOfUserFolderEngdev",
+            "Effect": "Allow",
+			"Action": "s3:ListBucket",
+			"Principal": {
+				"AWS": [
+				  "arn:aws:iam::115089117620:user/dc-dive-engdev-product-user"
+				]
+			},
+            "Resource": "arn:aws:s3:::dc-dive",
+            "Condition": {
+                "StringLike": {
+                    "s3:prefix": "engdev/*"
+                }
+            }
+        },
+		{
+		"Sid": "AllowAllS3ActionsInUserFolderEngdevFullAccess",
+		"Action": [
+		  "s3:*"
+		],
+		"Effect": "Allow",
+		"Principal": {
+			"AWS": [
+			  "arn:aws:iam::115089117620:user/dc-dive-engdev-product-user"
+			]
+		},
+		"Resource": "arn:aws:s3:::dc-dive/engdev/*"		
+		},		
+		{
+            "Sid": "AllowListingOfUserFolderDevAdditive",
+            "Effect": "Allow",
+			"Action": "s3:ListBucket",
+			"Principal": {
+				"AWS": [
+				  "arn:aws:iam::115089117620:user/dc-dive-dev-additive-user",
+				  "arn:aws:iam::115089117620:user/dc-dive-dev-product-user"
+				]
+			},
+            "Resource": "arn:aws:s3:::dc-dive",
+            "Condition": {
+                "StringLike": {
+                    "s3:prefix": "dev/62592105c68cbe53/*"
+                }
+            }
+        },
+		{
+		"Sid": "AllowAllS3ActionsInUserFolderDevAdditiveFullAccess",
+		"Action": [
+		  "s3:*"
+		],
+		"Effect": "Allow",
+		"Principal": {
+			"AWS": [
+			  "arn:aws:iam::115089117620:user/dc-dive-dev-additive-user",
+			  "arn:aws:iam::115089117620:user/dc-dive-dev-product-user"
+			]
+		},
+		"Resource": "arn:aws:s3:::dc-dive/dev/62592105c68cbe53/*"		
+		},
+		{
+            "Sid": "AllowListingOfUserFolderdevDigitalFullAccess",
+            "Effect": "Allow",
+			"Action": "s3:ListBucket",
+			"Principal": {
+				"AWS": [
+				  "arn:aws:iam::115089117620:user/dc-dive-dev-digital-user",
+				  "arn:aws:iam::115089117620:user/dc-dive-dev-product-user"
+				]
+			},
+            "Resource": "arn:aws:s3:::dc-dive",
+            "Condition": {
+                "StringLike": {
+                    "s3:prefix": "dev/c9be7bec3edf108b/*"
+                }
+            }
+        },
+		{
+		"Sid": "AllowAllS3ActionsInUserFolderDevDigitalFullAccess",
+		"Action": [
+		  "s3:*"
+		],
+		"Effect": "Allow",
+		"Principal": {
+			"AWS": [
+			  "arn:aws:iam::115089117620:user/dc-dive-dev-digital-user",
+			  "arn:aws:iam::115089117620:user/dc-dive-dev-product-user"
+			]
+		},
+		"Resource": "arn:aws:s3:::dc-dive/dev/c9be7bec3edf108b/*"		
+		},
+		{
+            "Sid": "AllowListingOfUserFolderDevRen",
+            "Effect": "Allow",
+			"Action": "s3:ListBucket",
+			"Principal": {
+				"AWS": [
+				  "arn:aws:iam::115089117620:user/dc-dive-dev-renewable-user",
+				  "arn:aws:iam::115089117620:user/dc-dive-dev-product-user"
+				]
+			},
+            "Resource": "arn:aws:s3:::dc-dive",
+            "Condition": {
+                "StringLike": {
+                    "s3:prefix": "dev/32637d26909253c4/*"
+                }
+            }
+        },
+		{
+		"Sid": "AllowAllS3ActionsInUserFolderDevRenFullAccess",
+		"Action": [
+		  "s3:*"
+		],
+		"Effect": "Allow",
+		"Principal": {
+			"AWS": [
+			  "arn:aws:iam::115089117620:user/dc-dive-dev-renewable-user",
+			  "arn:aws:iam::115089117620:user/dc-dive-dev-product-user"
+			]
+		},
+		"Resource": "arn:aws:s3:::dc-dive/dev/32637d26909253c4/*"		
+		},
+		{
+            "Sid": "AllowListingOfUserFolderDevCorp",
+            "Effect": "Allow",
+			"Action": "s3:ListBucket",
+			"Principal": {
+				"AWS": [
+				  "arn:aws:iam::115089117620:user/dc-dive-dev-corporate-user",
+				  "arn:aws:iam::115089117620:user/dc-dive-dev-product-user"
+				],
+				"Service": "s3.amazonaws.com"
+			},
+            "Resource": "arn:aws:s3:::dc-dive",
+            "Condition": {
+                "StringLike": {
+                    "s3:prefix": "dev/d31339e54a7dd4b1/*"
+                }
+            }
+        },
+		{
+		"Sid": "AllowAllS3ActionsInUserFolderDevCorpFullAccess",
+		"Action": [
+		  "s3:*"
+		],
+		"Effect": "Allow",
+		"Principal": {
+			"AWS": [
+			  "arn:aws:iam::115089117620:user/dc-dive-dev-corporate-user",
+			  "arn:aws:iam::115089117620:user/dc-dive-dev-product-user"
+			],
+			"Service": "s3.amazonaws.com"
+		},
+		"Resource": "arn:aws:s3:::dc-dive/dev/d31339e54a7dd4b1/*"		
+		},
+		{
+			"Sid": "AllowListingOfUserFolderstgAdditive",
+			"Effect": "Allow",
+			"Action": "s3:ListBucket",
+			"Principal": {
+				"AWS": [
+				"arn:aws:iam::115089117620:user/dc-dive-stage-additive-user",
+				"arn:aws:iam::115089117620:user/dc-dive-stage-product-user"
+				]
+			},
+			"Resource": "arn:aws:s3:::dc-dive",
+			"Condition": {
+				"StringLike": {
+					"s3:prefix": "stg/62592105c68cbe53/*"
+				}
+			}
+		},
+		{
+			"Sid": "AllowAllS3ActionsInUserFolderStgAdditiveFullAccess",
+			"Action": [
+			"s3:*"
+			],
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": [
+				"arn:aws:iam::115089117620:user/dc-dive-stage-additive-user",
+				"arn:aws:iam::115089117620:user/dc-dive-stage-product-user"
+				]
+			},
+			"Resource": "arn:aws:s3:::dc-dive/stg/62592105c68cbe53/*"		
+		},
+		{
+			"Sid": "AllowListingOfUserFolderStgDigital",
+			"Effect": "Allow",
+			"Action": "s3:ListBucket",
+			"Principal": {
+				"AWS": [
+				"arn:aws:iam::115089117620:user/dc-dive-stage-digital-user",
+				"arn:aws:iam::115089117620:user/dc-dive-stage-product-user"
+				]
+			},
+			"Resource": "arn:aws:s3:::dc-dive",
+			"Condition": {
+				"StringLike": {
+					"s3:prefix": "stg/c9be7bec3edf108b/*"
+				}
+			}
+		},
+		{
+			"Sid": "AllowAllS3ActionsInUserFolderStgDigitalFullAccess",
+			"Action": [
+			"s3:*"
+			],
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": [
+				"arn:aws:iam::115089117620:user/dc-dive-stage-digital-user",
+				"arn:aws:iam::115089117620:user/dc-dive-stage-product-user"
+				]
+			},
+			"Resource": "arn:aws:s3:::dc-dive/stg/c9be7bec3edf108b/*"		
+		},
+		{
+			"Sid": "AllowListingOfUserFolderStgRen",
+			"Effect": "Allow",
+			"Action": "s3:ListBucket",
+			"Principal": {
+				"AWS": [
+				"arn:aws:iam::115089117620:user/dc-dive-stage-renewable-user",
+				"arn:aws:iam::115089117620:user/dc-dive-stage-product-user"
+				]
+			},
+			"Resource": "arn:aws:s3:::dc-dive",
+			"Condition": {
+				"StringLike": {
+					"s3:prefix": "stg/32637d26909253c4/*"
+				}
+			}
+		},
+		{
+			"Sid": "AllowAllS3ActionsInUserFolderStgRenFullAccess",
+			"Action": [
+			"s3:*"
+			],
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": [
+				"arn:aws:iam::115089117620:user/dc-dive-stage-renewable-user",
+				"arn:aws:iam::115089117620:user/dc-dive-stage-product-user"
+				]
+			},
+			"Resource": "arn:aws:s3:::dc-dive/stg/32637d26909253c4/*"		
+		},
+		{
+			"Sid": "AllowListingOfUserFolderStgCorp",
+			"Effect": "Allow",
+			"Action": "s3:ListBucket",
+			"Principal": {
+				"AWS": [
+				"arn:aws:iam::115089117620:user/dc-dive-stage-corporate-user",
+				"arn:aws:iam::115089117620:user/dc-dive-stage-product-user"
+				],
+				"Service": "s3.amazonaws.com"
+			},
+			"Resource": "arn:aws:s3:::dc-dive",
+			"Condition": {
+				"StringLike": {
+					"s3:prefix": "stg/d31339e54a7dd4b1/*"
+				}
+			}
+		},
+		{
+			"Sid": "AllowAllS3ActionsInUserFolderStgCorpFullAccess",
+			"Action": [
+			"s3:*"
+			],
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": [
+				"arn:aws:iam::115089117620:user/dc-dive-stage-corporate-user",
+				"arn:aws:iam::115089117620:user/dc-dive-stage-product-user"
+				],
+				"Service": "s3.amazonaws.com"
+			},
+			"Resource": "arn:aws:s3:::dc-dive/stg/d31339e54a7dd4b1/*"		
+		},
+		{
+			"Sid": "AllowListingOfUserFolderPrdAdditive",
+			"Effect": "Allow",
+			"Action": "s3:ListBucket",
+			"Principal": {
+				"AWS": [
+				"arn:aws:iam::115089117620:user/dc-dive-prod-additive-user",
+				"arn:aws:iam::115089117620:user/dc-dive-prod-product-user"
+				]
+			},
+			"Resource": "arn:aws:s3:::dc-dive",
+			"Condition": {
+				"StringLike": {
+					"s3:prefix": "prod/62592105c68cbe53/*"
+				}
+			}
+		},
+		{
+			"Sid": "AllowAllS3ActionsInUserFolderPrdAdditiveFullAccess",
+			"Action": [
+			"s3:*"
+			],
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": [
+				"arn:aws:iam::115089117620:user/dc-dive-prod-additive-user",
+				"arn:aws:iam::115089117620:user/dc-dive-prod-product-user"
+				]
+			},
+			"Resource": "arn:aws:s3:::dc-dive/prod/62592105c68cbe53/*"		
+		},
+		{
+			"Sid": "AllowListingOfUserFolderPrdDigital",
+			"Effect": "Allow",
+			"Action": "s3:ListBucket",
+			"Principal": {
+				"AWS": [
+				"arn:aws:iam::115089117620:user/dc-dive-prod-digital-user",
+				"arn:aws:iam::115089117620:user/dc-dive-prod-product-user"
+				]
+			},
+			"Resource": "arn:aws:s3:::dc-dive",
+			"Condition": {
+				"StringLike": {
+					"s3:prefix": "prod/c9be7bec3edf108b/*"
+				}
+			}
+		},
+		{
+			"Sid": "AllowAllS3ActionsInUserFolderPrdDigitalFullAccess",
+			"Action": [
+			"s3:*"
+			],
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": [
+				"arn:aws:iam::115089117620:user/dc-dive-prod-digital-user",
+				"arn:aws:iam::115089117620:user/dc-dive-prod-product-user"
+				]
+			},
+			"Resource": "arn:aws:s3:::dc-dive/prod/c9be7bec3edf108b/*"		
+		},
+		{
+			"Sid": "AllowListingOfUserFolderPrdRen",
+			"Effect": "Allow",
+			"Action": "s3:ListBucket",
+			"Principal": {
+				"AWS": [
+				"arn:aws:iam::115089117620:user/dc-dive-prod-renewable-user",
+				"arn:aws:iam::115089117620:user/dc-dive-prod-product-user"
+				]
+			},
+			"Resource": "arn:aws:s3:::dc-dive",
+			"Condition": {
+				"StringLike": {
+					"s3:prefix": "prod/32637d26909253c4/*"
+				}
+			}
+		},
+		{
+			"Sid": "AllowAllS3ActionsInUserFolderPrdRenFullAccess",
+			"Action": [
+			"s3:*"
+			],
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": [
+				"arn:aws:iam::115089117620:user/dc-dive-prod-renewable-user",
+				"arn:aws:iam::115089117620:user/dc-dive-prod-product-user"
+				]
+			},
+			"Resource": "arn:aws:s3:::dc-dive/prod/32637d26909253c4/*"		
+		},
+		{
+			"Sid": "AllowListingOfUserFolderPrdCorp",
+			"Effect": "Allow",
+			"Action": "s3:ListBucket",
+			"Principal": {
+				"AWS": [
+				"arn:aws:iam::115089117620:user/dc-dive-prod-corporate-user",
+				"arn:aws:iam::115089117620:user/dc-dive-prod-product-user"
+				],
+				"Service": "s3.amazonaws.com"
+			},
+			"Resource": "arn:aws:s3:::dc-dive",
+			"Condition": {
+				"StringLike": {
+					"s3:prefix": "prod/d31339e54a7dd4b1/*"
+				}
+			}
+		},
+		{
+			"Sid": "AllowAllS3ActionsInUserFolderPrdRenFullAccess",
+			"Action": [
+			"s3:*"
+			],
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": [
+				"arn:aws:iam::115089117620:user/dc-dive-prod-corporate-user",
+				"arn:aws:iam::115089117620:user/dc-dive-prod-product-user"
+				],
+				"Service": "s3.amazonaws.com"
+			},
+			"Resource": "arn:aws:s3:::dc-dive/prod/d31339e54a7dd4b1/*"		
+		},
+		{
+            "Sid": "AllowPowerListingOfS3Bucket",
+            "Action": ["s3:ListBucket"],
+            "Effect": "Allow",
+            "Principal": {
+				"AWS": [
+                  "arn:aws:iam::325381443140:user/boomi_thru_user"
+				]
+			},
+            "Resource": ["arn:aws:s3:::dc-dive"],
+            "Condition":{"StringEquals":{"s3:prefix":["", "dev/","stg/","prod/","dev/d49d384481cecda5","stg/d49d384481cecda5","prod/d49d384481cecda5"],"s3:delimiter":["/"]}}
+        },
+		{
+            "Sid": "AllowListingOfUserFolderAllPower",
+            "Effect": "Allow",
+			"Action": "s3:ListBucket",
+			"Principal": {
+				"AWS": [
+				  "arn:aws:iam::325381443140:user/boomi_thru_user"
+				]
+			},
+            "Resource": "arn:aws:s3:::dc-dive",
+            "Condition": {
+                "StringLike": {
+                    "s3:prefix": [
+						"dev/d49d384481cecda5/*",
+						"stg/d49d384481cecda5/*",
+						"prod/d49d384481cecda5/*"
+					]
+                }
+            }
+        },
+		{
+			"Sid": "AllowAllS3ActionsInUserFolderDevAdditiveFullAccess",
+			"Action": [
+			"s3:Get*",
+			"s3:List*",
+			"s3:DeleteObject",
+			"s3:DeleteObjectVersion"
+			],
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": [
+					"arn:aws:iam::325381443140:user/boomi_thru_user"
+				]
+			},
+			"Resource": [
+				"arn:aws:s3:::dc-dive/dev/d49d384481cecda5/*",
+				"arn:aws:s3:::dc-dive/stg/d49d384481cecda5/*",
+				"arn:aws:s3:::dc-dive/prod/d49d384481cecda5/*"
+			]		
+		},
+		{
+			"Sid": "Only allow writes to my bucket with bucket owner full control",
+			"Effect": "Allow",
+			"Principal": {
+			   "AWS": [
+				  "arn:aws:iam::325381443140:user/boomi_thru_user"
+			   ]
+			},
+			"Action": [
+				"s3:PutObject",
+				"s3:PutObjectAcl"
+			],
+			"Resource": [
+				"arn:aws:s3:::dc-dive/dev/d49d384481cecda5/*",
+				"arn:aws:s3:::dc-dive/stg/d49d384481cecda5/*",
+				"arn:aws:s3:::dc-dive/prod/d49d384481cecda5/*"
+			],
+			"Condition": {
+			   "StringEquals": {
+				  "s3:x-amz-acl": "bucket-owner-full-control"
+			   }
+			}
+		},
+		{
+			"Sid": "AllowSSLRequestsOnly",
+			"Action": "s3:*",
+			"Effect": "Deny",
+			"Resource": [
+				"arn:aws:s3:::dc-dive",
+				"arn:aws:s3:::dc-dive/*"
+			],
+			"Principal": {
+				"Service": "s3.amazonaws.com"
+			},
+			"Condition": {
+				"Bool": {
+					"aws:SecureTransport": "false"
+				}
+			}
+		}	      
+	]
+  }

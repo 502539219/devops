@@ -1,0 +1,366 @@
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+            "Sid": "AllowRootAndHomeListingOfCompanyBucket for GED Prod",
+            "Effect": "Allow",
+			"Action": [
+				"s3:ListBucket"
+			],	
+			"Principal": {
+				"AWS": [
+                  "arn:aws:iam::115089117620:role/bu-s3-ged-prod-admin",
+                  "arn:aws:iam::115089117620:role/bu-s3-ged-preprod-admin",
+                  "arn:aws:iam::115089117620:role/bu-s3-gea-preprod-admin",
+                  "arn:aws:iam::115089117620:role/bu-s3-gea-prod-admin",
+                  "arn:aws:iam::115089117620:user/dc-ge-additive-preprod-s3-access",
+                  "arn:aws:iam::115089117620:user/dc-ge-digital-preprod-s3-access",
+                  "arn:aws:iam::115089117620:user/dc-ge-additive-prod-s3-access",
+                  "arn:aws:iam::115089117620:user/dc-ge-digital-prod-s3-access"
+                ]
+			},
+            "Resource": "arn:aws:s3:::dc-ge-integrations",
+            "Condition": {
+				"StringEquals": {
+					"s3:prefix": [
+						""
+					],
+					"s3:delimiter": [
+						"/"
+					]
+				}
+            }
+           
+        },
+        {
+            "Sid": "AllowDigitalListingOfS3Bucket",
+            "Action": ["s3:ListBucket"],
+            "Effect": "Allow",
+            "Principal": {
+				"AWS": [
+                  "arn:aws:iam::115089117620:role/bu-s3-ged-preprod-admin",
+                  "arn:aws:iam::115089117620:user/dc-ge-digital-preprod-s3-access"
+				]
+			},
+            "Resource": ["arn:aws:s3:::dc-ge-integrations"],
+            "Condition":{"StringEquals":{"s3:prefix":["", "digital/","digital/dev", "digital/stage"],"s3:delimiter":["/"]}}
+        },
+		{
+            "Sid": "AllowListingOfUserFolder",
+            "Effect": "Allow",
+			"Action": "s3:ListBucket",
+            "Principal": {
+				"AWS": [
+                  "arn:aws:iam::115089117620:role/bu-s3-ged-preprod-admin",
+                  "arn:aws:iam::115089117620:user/dc-ge-digital-preprod-s3-access"
+				]
+			},
+            "Resource": "arn:aws:s3:::dc-ge-integrations",
+            "Condition": {
+                "StringLike": {
+                    "s3:prefix": [
+                        "digital/dev/*",
+                        "digital/stage/*"
+                    ]
+                }
+            }
+        },
+        {
+            "Sid": "DenyAccessForlistDigitalProd",
+            "Effect": "Deny",
+            "Principal": {
+				"AWS": [
+                  "arn:aws:iam::115089117620:role/bu-s3-ged-preprod-admin",
+                  "arn:aws:iam::115089117620:user/dc-ge-digital-preprod-s3-access"
+				]
+			},
+            "Action": "s3:ListBucket",
+            "Resource": "arn:aws:s3:::dc-ge-integrations",
+            "Condition": {
+                "StringLike": {
+                    "s3:prefix": "digital/prod/*"
+                }
+            }
+        },
+		{
+            "Sid": "AllowListingOfUserFolder",
+            "Effect": "Allow",
+			"Action": "s3:*",
+			"Principal": {
+				"AWS": [
+                  "arn:aws:iam::115089117620:role/bu-s3-ged-preprod-admin",
+                  "arn:aws:iam::115089117620:user/dc-ge-digital-preprod-s3-access"
+				]
+            },
+            "Resource": [
+                "arn:aws:s3:::dc-ge-integrations/digital/dev/*",
+                "arn:aws:s3:::dc-ge-integrations/digital/stage/*"
+            ]
+        },
+        {
+            "Sid": "AllowDigitalProdListingOfS3Bucket",
+            "Action": ["s3:ListBucket"],
+            "Effect": "Allow",
+			"Principal": {
+				"AWS": [
+				  "arn:aws:iam::115089117620:role/bu-s3-ged-prod-admin",
+                  "arn:aws:iam::115089117620:user/dc-ge-digital-prod-s3-access"
+				]
+			},
+            "Resource": ["arn:aws:s3:::dc-ge-integrations"],
+            "Condition":{"StringEquals":{"s3:prefix":["", "digital/","digital/prod"],"s3:delimiter":["/"]}}
+        },
+		{
+            "Sid": "AllowListingOfUserFolder",
+            "Effect": "Allow",
+			"Action": "s3:ListBucket",
+			"Principal": {
+				"AWS": [
+				  "arn:aws:iam::115089117620:role/bu-s3-ged-prod-admin",
+                  "arn:aws:iam::115089117620:user/dc-ge-digital-prod-s3-access"
+				]
+			},
+            "Resource": "arn:aws:s3:::dc-ge-integrations",
+            "Condition": {
+                "StringLike": {
+                    "s3:prefix": [
+                        "digital/prod/*"
+                    ]
+                }
+            }
+        },
+		{
+            "Sid": "AllowAllS3ActionsInUserFolder",
+            "Action": [
+            "s3:*"
+            ],
+            "Effect": "Allow",
+			"Principal": {
+				"AWS": [
+				  "arn:aws:iam::115089117620:role/bu-s3-ged-prod-admin",
+                  "arn:aws:iam::115089117620:user/dc-ge-digital-prod-s3-access"
+				]
+			},
+            "Resource": [
+                "arn:aws:s3:::dc-ge-integrations/digital/prod/*"
+            ]
+        },
+        {
+            "Sid": "DenyAccessForlistDigitalStageDev",
+            "Effect": "Deny",
+			"Principal": {
+				"AWS": [
+				  "arn:aws:iam::115089117620:role/bu-s3-ged-prod-admin",
+                  "arn:aws:iam::115089117620:user/dc-ge-digital-prod-s3-access"
+				]
+			},
+            "Action": "s3:ListBucket",
+            "Resource": "arn:aws:s3:::dc-ge-integrations",
+            "Condition": {
+                "StringLike": {
+                    "s3:prefix": [
+                        "digital/dev/*",
+                        "digital/stage/*"
+                    ]
+                }
+            }
+        },
+        {
+            "Sid": "AllowAdditiveListingOfS3Bucket",
+            "Action": ["s3:ListBucket"],
+            "Effect": "Allow",
+			"Principal": {
+				"AWS": [
+                  "arn:aws:iam::115089117620:role/bu-s3-gea-preprod-admin",
+                  "arn:aws:iam::115089117620:user/dc-ge-additive-preprod-s3-access"
+				]
+			},
+            "Resource": ["arn:aws:s3:::dc-ge-integrations"],
+            "Condition":{"StringEquals":{"s3:prefix":["", "additive/","additive/dev", "additive/stage"],"s3:delimiter":["/"]}}
+        },
+		{
+            "Sid": "AllowListingOfUserFolder",
+            "Effect": "Allow",
+			"Action": "s3:ListBucket",
+			"Principal": {
+				"AWS": [
+                  "arn:aws:iam::115089117620:role/bu-s3-gea-preprod-admin",
+                  "arn:aws:iam::115089117620:user/dc-ge-additive-preprod-s3-access"
+				]
+			},
+            "Resource": "arn:aws:s3:::dc-ge-integrations",
+            "Condition": {
+                "StringLike": {
+                    "s3:prefix": [
+                        "additive/dev/*",
+                        "additive/stage/*"
+                    ]
+                }
+            }
+        },
+		{
+            "Sid": "AllowListingOfUserFolder",
+            "Effect": "Allow",
+			"Action": "s3:*",
+			"Principal": {
+				"AWS": [
+                  "arn:aws:iam::115089117620:role/bu-s3-gea-preprod-admin",
+                  "arn:aws:iam::115089117620:user/dc-ge-additive-preprod-s3-access"
+				]
+            },
+            "Resource": [
+                "arn:aws:s3:::dc-ge-integrations/additive/dev/*",
+                "arn:aws:s3:::dc-ge-integrations/additive/stage/*"
+            ]
+        },
+        {
+            "Sid": "DenyAccessForlistAdditiveProd",
+            "Effect": "Deny",
+			"Principal": {
+				"AWS": [
+                  "arn:aws:iam::115089117620:role/bu-s3-gea-preprod-admin",
+                  "arn:aws:iam::115089117620:user/dc-ge-additive-preprod-s3-access"
+				]
+			},
+            "Action": "s3:ListBucket",
+            "Resource": "arn:aws:s3:::dc-ge-integrations",
+            "Condition": {
+                "StringLike": {
+                    "s3:prefix": "additive/prod/*"
+                }
+            }
+        },
+        {
+            "Sid": "AllowDigitalProdListingOfS3Bucket",
+            "Action": ["s3:ListBucket"],
+            "Effect": "Allow",
+			"Principal": {
+				"AWS": [
+				  "arn:aws:iam::115089117620:role/bu-s3-gea-prod-admin",
+                  "arn:aws:iam::115089117620:user/dc-ge-additive-prod-s3-access"
+				]
+			},
+            "Resource": ["arn:aws:s3:::dc-ge-integrations"],
+            "Condition":{"StringEquals":{"s3:prefix":["", "additive/","additive/prod"],"s3:delimiter":["/"]}}
+        },
+		{
+            "Sid": "AllowListingOfUserFolder",
+            "Effect": "Allow",
+			"Action": "s3:ListBucket",
+			"Principal": {
+				"AWS": [
+				  "arn:aws:iam::115089117620:role/bu-s3-gea-prod-admin",
+                  "arn:aws:iam::115089117620:user/dc-ge-additive-prod-s3-access"
+				]
+			},
+            "Resource": "arn:aws:s3:::dc-ge-integrations",
+            "Condition": {
+                "StringLike": {
+                    "s3:prefix": [
+                        "additive/prod/*"
+                    ]
+                }
+            }
+        },
+		{
+            "Sid": "AllowAllS3ActionsInUserFolder",
+            "Action": [
+            "s3:*"
+            ],
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": [
+                "arn:aws:iam::115089117620:role/bu-s3-gea-prod-admin",
+                "arn:aws:iam::115089117620:user/dc-ge-additive-prod-s3-access"
+                ]
+            },
+            "Resource": [
+                "arn:aws:s3:::dc-ge-integrations/additive/prod/*"
+            ]
+        },
+        {
+            "Sid": "DenyAccessForlistAdditiveStageDev",
+            "Effect": "Deny",
+			"Principal": {
+				"AWS": [
+				  "arn:aws:iam::115089117620:role/bu-s3-gea-prod-admin",
+                  "arn:aws:iam::115089117620:user/dc-ge-additive-prod-s3-access"
+				]
+			},
+            "Action": "s3:ListBucket",
+            "Resource": "arn:aws:s3:::dc-ge-integrations",
+            "Condition": {
+                "StringLike": {
+                    "s3:prefix": [
+                        "additive/dev/*",
+                        "additive/stage/*"
+                    ]
+                }
+            }
+        },
+        {
+            "Sid": "AllowListingOfUserFolderS3url",
+            "Effect": "Allow",
+			"Action": "s3:GetObject",
+			"Principal": {
+				"AWS": [
+                  "*"
+				]
+            },
+            "Condition": {
+                "IpAddress": {
+                  "aws:SourceIp": [
+                    "165.156.39.0/26",
+                    "165.156.40.0/26",
+                    "165.156.34.0/24",
+                    "165.156.37.0/24",
+                    "198.169.189.224/28",
+                    "198.169.188.224/28",
+                    "194.9.244.0/26",
+                    "194.9.245.0/26",
+                    "165.156.29.64/26",
+                    "165.156.28.64/26",
+                    "165.156.31.64/26"
+                  ]
+                }
+            },
+            "Resource": [
+                "arn:aws:s3:::dc-ge-integrations/additive/dev/*",
+                "arn:aws:s3:::dc-ge-integrations/additive/stage/*"
+            ]
+        },
+        {
+            "Sid": "DenyReadAcessForOthers",
+            "Effect": "Deny",
+            "Action": [
+                "s3:Get*"
+            ],
+            "Resource": [
+                "arn:aws:s3:::dc-ge-integrations",
+                "arn:aws:s3:::dc-ge-integrations/*"
+            ],
+            "Principal" : {
+                "AWS": [
+                    "arn:aws:iam::115089117620:role/bu-dc-readonly"
+                ]
+            }
+        },
+        {
+            "Sid": "AllowSSLRequestsOnly",
+            "Action": "s3:*",
+            "Effect": "Deny",
+            "Resource": [
+                    "arn:aws:s3:::dc-ge-integrations",
+                    "arn:aws:s3:::dc-ge-integrations/*"
+                    ],
+            "Principal": {
+                "Service": "s3.amazonaws.com"
+            },
+            "Condition": {
+                "Bool": {
+                "aws:SecureTransport": "false"
+                }               
+            }      
+        }       
+    ]
+}
